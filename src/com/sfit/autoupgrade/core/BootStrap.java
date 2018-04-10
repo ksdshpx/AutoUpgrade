@@ -15,6 +15,7 @@ import java.net.ServerSocket;
 public class BootStrap {
     /**
      * 主程序
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -28,7 +29,15 @@ public class BootStrap {
         //创建服务器端套接字，并绑定端口
         try {
             Logger.log("AutoUpgrade Start!");
-            ServerSocket serverSocket = new ServerSocket(8888);
+            //获取系统启动开始时间
+            long startTime = System.currentTimeMillis();
+            //获取系统端口号
+            int port = ServerParser.getPort();
+            Logger.log("AutoUpgrade-Port:" + port);
+            ServerSocket serverSocket = new ServerSocket(port);
+            //获取系统启动结束时间
+            long endTime = System.currentTimeMillis();
+            Logger.log("AutoUpgrade Started:hosts " + (endTime - startTime) + " ms");
         } catch (IOException e) {
             e.printStackTrace();
         }
