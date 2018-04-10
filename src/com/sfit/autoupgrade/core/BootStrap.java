@@ -2,9 +2,7 @@ package com.sfit.autoupgrade.core;
 
 import com.sfit.autoupgrade.util.Logger;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -31,7 +29,6 @@ public class BootStrap {
     private static void start() {
         ServerSocket serverSocket = null;
         Socket clientSocket = null;
-        BufferedReader bufferedReader = null;
         try {
             Logger.log("AutoUpgrade Start!");
             //获取系统启动开始时间
@@ -47,30 +44,12 @@ public class BootStrap {
             while (true) {
                 //开始监听网络，此时程序处于等待状态，等待客户端升级请求
                 clientSocket = serverSocket.accept();
-                bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                String line = null;
-                while ((line = bufferedReader.readLine()) != null) {
-                    System.out.println(line);
-                }
+                new Thread(new HandleRequest(clientSocket)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
             //关闭资源
-            if(bufferedReader!=null){
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(clientSocket!=null){
-                try {
-                    clientSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             if(serverSocket!=null){
                 try {
                     serverSocket.close();
