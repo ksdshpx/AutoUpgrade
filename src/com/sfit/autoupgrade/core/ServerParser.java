@@ -24,7 +24,7 @@ public class ServerParser {
             //创建解析器
             SAXReader saxReader = new SAXReader();
             //通过解析器的read方法将配置文件读取到内存中，生成一个Document对象树
-            Document document = saxReader.read(System.getProperty("user.dir") + "/server.xml");
+            Document document = saxReader.read(System.getProperty("user.dir") + "/conf/server.xml");
             //获取connector节点元素的路径：server->service->connector
             //获取connector节点元素的xpath路径：/server/service/connector
             //获取connector节点元素的xpath路径：server//connector

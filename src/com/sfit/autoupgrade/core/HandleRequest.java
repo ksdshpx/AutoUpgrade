@@ -1,5 +1,7 @@
 package com.sfit.autoupgrade.core;
 
+import com.sfit.autoupgrade.util.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,24 +23,32 @@ public class HandleRequest implements Runnable {
 
     @Override
     public void run() {
+        //处理客户端请求
         BufferedReader bufferedReader = null;
+        Logger.log("AutoUpgrade thread:" + Thread.currentThread().getName());
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String line = null;
+            //打印客户端消息
+            /*String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 System.out.println(line);
-            }
-        }catch (Exception e){
+            }*/
+            //获取请求协议的请求行
+            String requestLine = bufferedReader.readLine();//GET /oa/index.jsp HTTP/1.1
+            //获取URI
+            String requestURI = requestLine.split("\\s")[1];
+            System.out.println("requestURI:" + requestURI);
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(bufferedReader!=null){
+        } finally {
+            if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(clientSocket!=null){
+            if (clientSocket != null) {
                 try {
                     clientSocket.close();
                 } catch (IOException e) {
