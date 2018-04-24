@@ -1,6 +1,7 @@
 package com.sfit.autoupgrade.core;
 
 import com.sfit.autoupgrade.util.Logger;
+import org.sfit.autoupgrade.servlet.LoginServlet;
 
 import java.io.*;
 import java.net.Socket;
@@ -44,6 +45,18 @@ public class HandleRequest implements Runnable {
                 if (requestURI.endsWith(".html") || requestURI.endsWith(".htm")) {
                     //响应静态页面
                     responseStaticPage(requestURI, out);
+                }else{//动态资源，java程序，业务处理类
+                    //requestURI---->/oa/login?username=zhangsan&password=123
+                    //requestURI---->/oa/login
+                    //有参数
+                    String servletPath = null;
+                    if(requestURI.contains("?")){
+                        servletPath = requestURI.split("\\?")[0];
+                    }
+                    if("/oa/login".equals(servletPath)){
+                        LoginServlet loginServlet = new LoginServlet();
+                        loginServlet.service();
+                    }
                 }
             }
             //刷新流
