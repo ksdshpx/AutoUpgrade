@@ -1,6 +1,7 @@
 package com.sfit.autoupgrade.core;
 
 import com.sfit.autoupgrade.util.Logger;
+import org.dom4j.DocumentException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -33,6 +34,8 @@ public class BootStrap {
             Logger.log("AutoUpgrade Start!");
             //获取系统启动开始时间
             long startTime = System.currentTimeMillis();
+            //解析服务器中的web.xml配置文件
+            WebParser.parse(new String[]{"oa"});
             //获取系统端口号
             int port = ServerParser.getPort();
             Logger.log("AutoUpgrade-Port:" + port);
@@ -48,7 +51,9 @@ public class BootStrap {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } finally {
             //关闭资源
             if(serverSocket!=null){
                 try {

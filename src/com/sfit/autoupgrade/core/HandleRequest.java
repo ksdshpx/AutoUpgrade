@@ -1,10 +1,11 @@
 package com.sfit.autoupgrade.core;
 
 import com.sfit.autoupgrade.util.Logger;
-import org.sfit.autoupgrade.servlet.LoginServlet;
 
+import javax.servlet.Servlet;
 import java.io.*;
 import java.net.Socket;
+import java.util.Map;
 
 /**
  * Create with IntelliJ IDEA
@@ -51,12 +52,25 @@ public class HandleRequest implements Runnable {
                     //有参数
                     String servletPath = null;
                     if(requestURI.contains("?")){
-                        servletPath = requestURI.split("\\?")[0];
+                        servletPath = requestURI.split("[?]")[0];
                     }
-                    if("/oa/login".equals(servletPath)){
+                    /*if("/oa/login".equals(servletPath)){
                         LoginServlet loginServlet = new LoginServlet();
                         loginServlet.service();
-                    }
+                    }*/
+                    //从serveltPath(/oa/login)中获取应用的名称oa
+                    String webAppName = servletPath.split("[/]")[1];
+                    //获取servletMaps中的value值servletMap
+                    Map<String, String> servletMap = WebParser.getServletMaps().get(webAppName);
+                    //获取servletMap中的key值
+                    String urlPattern = servletPath.substring(1 + webAppName.length());
+                    //获取servletClassName
+                    String servletClassName = servletMap.get(urlPattern);
+                    //通过反射机制创建该业务处理类
+                    Class<?> c = Class.forName(servletClassName);
+                    Object obj = c.newInstance();
+                    Servlet servlet = (Servlet) obj;
+                    servlet.service();
                 }
             }
             //刷新流
