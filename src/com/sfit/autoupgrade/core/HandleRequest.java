@@ -46,12 +46,12 @@ public class HandleRequest implements Runnable {
                 if (requestURI.endsWith(".html") || requestURI.endsWith(".htm")) {
                     //响应静态页面
                     responseStaticPage(requestURI, out);
-                }else{//动态资源，java程序，业务处理类
+                } else {//动态资源，java程序，业务处理类
                     //requestURI---->/oa/login?username=zhangsan&password=123
                     //requestURI---->/oa/login
                     //有参数
                     String servletPath = null;
-                    if(requestURI.contains("?")){
+                    if (requestURI.contains("?")) {
                         servletPath = requestURI.split("[?]")[0];
                     }
                     /*if("/oa/login".equals(servletPath)){
@@ -66,11 +66,29 @@ public class HandleRequest implements Runnable {
                     String urlPattern = servletPath.substring(1 + webAppName.length());
                     //获取servletClassName
                     String servletClassName = servletMap.get(urlPattern);
-                    //通过反射机制创建该业务处理类
-                    Class<?> c = Class.forName(servletClassName);
-                    Object obj = c.newInstance();
-                    Servlet servlet = (Servlet) obj;
-                    servlet.service();
+                    //判断业务处理类是否存在
+                    if (servletClassName != null) {
+                        //通过反射机制创建该业务处理类
+                        Class<?> c = Class.forName(servletClassName);
+                        Object obj = c.newInstance();
+                        Servlet servlet = (Servlet) obj;
+                        servlet.service();
+                    }else{
+                        //找不到资源404
+                        StringBuilder responseInfo = new StringBuilder();
+                        responseInfo.append("HTTP/1.1 404 NotFound\n");
+                        responseInfo.append("Context-Type:text/html;charset=utf-8\n\n");
+                        responseInfo.append("<html>");
+                        responseInfo.append("<head>");
+                        responseInfo.append("<title>404错误页面</title>");
+                        responseInfo.append("<meta charset=\"utf-8\"");
+                        responseInfo.append("</head>");
+                        responseInfo.append("<body>");
+                        responseInfo.append("<center><font size=\"35px\" color=\"red\">404-NotFound</font></center>");
+                        responseInfo.append("</body>");
+                        responseInfo.append("</html>");
+                        out.print(responseInfo.toString());
+                    }
                 }
             }
             //刷新流
