@@ -68,11 +68,13 @@ public class HandleRequest implements Runnable {
                     String servletClassName = servletMap.get(urlPattern);
                     //判断业务处理类是否存在
                     if (servletClassName != null) {
+                        out.print("HTTP/1.1 200 OK\n");
+                        out.print("Content-Type:text/html;charset=utf-8\n\n");
                         //通过反射机制创建该业务处理类
                         Class<?> c = Class.forName(servletClassName);
                         Object obj = c.newInstance();
                         Servlet servlet = (Servlet) obj;
-                        servlet.service();
+                        servlet.service(out);
                     }else{
                         //找不到资源404
                         StringBuilder responseInfo = new StringBuilder();

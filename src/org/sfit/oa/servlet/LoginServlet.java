@@ -1,6 +1,7 @@
 package org.sfit.oa.servlet;
 
 import javax.servlet.Servlet;
+import java.io.PrintWriter;
 
 /**
  * Create with IntelliJ IDEA
@@ -11,7 +12,16 @@ import javax.servlet.Servlet;
  */
 public class LoginServlet implements Servlet{
     @Override
-    public void service(){
+    public void service(PrintWriter out){
         System.out.println("正在验证身份，请稍后...");
+        out.print("<html>");
+        out.print("<head>");
+        out.print("<title>验证身份</title>");
+        out.print("<meta charset='utf-8'/>");
+        out.print("</head>");
+        out.print("<body>");
+        out.print("<center><font size='35' color='blue'>正在验证身份，请稍后！</font></center>");
+        out.print("</body>");
+        out.print("</html>");
     }
 }
