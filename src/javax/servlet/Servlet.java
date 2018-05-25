@@ -1,7 +1,5 @@
 package javax.servlet;
 
-import java.io.PrintWriter;
-
 /**
  * Create with IntelliJ IDEA
  * Create by peng.x
@@ -11,5 +9,5 @@ import java.io.PrintWriter;
  */
 public interface Servlet {
     //处理业务的核心方法
-    public abstract void service(PrintWriter out);
+    public abstract void service(ServletResponse response);
 }
