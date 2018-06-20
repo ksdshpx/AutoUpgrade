@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>保存用户</title>
+</head>
+<body>
+    <form name="userForm" action="/user/save" method="post">
+        用户名:<input type="text" name="username"/><br>
+        性&nbsp;&nbsp;&nbsp;别:<input type="radio" name="gendar" value="1"/>男
+        <input type="radio" name="gendar" value="0"/>女<br>
+        兴&nbsp;&nbsp;&nbsp;趣:<input type="checkbox" name="interest" value="music">音乐
+        <input type="checkbox" name="interest" value="music"/>音乐
+        <input type="checkbox" name="interest" value="food"/>美食
+        <input type="checkbox" name="interest" value="sport"/>运动
+        <input type="checkbox" name="interest" value="eat"/>吃饭
+        <input type="checkbox" name="interest" value="sleep"/>睡觉<br>
+        <input type="submit" value="保存"/>
+        <input type="reset" value="重置"/>
+    </form>
+</body>
+</html>
