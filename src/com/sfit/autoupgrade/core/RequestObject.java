@@ -1,5 +1,6 @@
 package com.sfit.autoupgrade.core;
 
+import javax.servlet.ServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ import java.util.Map;
  * Time: 15:34
  * Description:封装请求数据
  */
-public class RequestObject {
+public class RequestObject implements ServletRequest{
     private Map<String, String[]> parameterMap = new HashMap<>();
 
     public RequestObject(String requestURI) {
@@ -38,12 +39,12 @@ public class RequestObject {
                             //定义一个新的数组，而新数组的长度永远比values数组长度大1
                             String[] newValues = new String[values.length + 1];
                             //数组复制
-                            System.arraycopy(values,0,newValues,0,values.length);
+                            System.arraycopy(values, 0, newValues, 0, values.length);
                             //判断该参数是否有值
-                            if(nameAndValueAttr.length > 1){
-                                newValues[newValues.length -1] = nameAndValueAttr[1];
-                            }else{
-                                newValues[newValues.length -1] = "";
+                            if (nameAndValueAttr.length > 1) {
+                                newValues[newValues.length - 1] = nameAndValueAttr[1];
+                            } else {
+                                newValues[newValues.length - 1] = "";
                             }
                             parameterMap.put(nameAndValueAttr[0], newValues);
                         } else {
@@ -67,5 +68,25 @@ public class RequestObject {
                 }
             }
         }
+    }
+
+    /**
+     * 获取普通标签参数的值
+     *
+     * @param key 标签name属性的值
+     * @return String 标签value的值
+     */
+    public String getParameterValue(String key) {
+        String[] value = parameterMap.get(key);
+        return (value != null && value.length != 0) ? value[0] : null;
+    }
+
+    /**
+     * 获取多选框的值
+     * @param key 标签name属性的值
+     * @return String[] 多选框value的值
+     */
+    public String[] getParameterValues(String key){
+        return parameterMap.get(key);
     }
 }

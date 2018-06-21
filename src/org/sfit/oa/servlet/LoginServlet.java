@@ -1,6 +1,7 @@
 package org.sfit.oa.servlet;
 
 import javax.servlet.Servlet;
+import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.PrintWriter;
 
@@ -11,9 +12,9 @@ import java.io.PrintWriter;
  * Time: 15:02
  * Description:处理登录业务的类
  */
-public class LoginServlet implements Servlet{
+public class LoginServlet implements Servlet {
     @Override
-    public void service(ServletResponse response){
+    public void service(ServletRequest request, ServletResponse response) {
         PrintWriter out = response.getWriter();
         System.out.println("正在验证身份，请稍后...");
         out.print("<html>");
