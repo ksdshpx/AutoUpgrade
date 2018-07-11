@@ -56,7 +56,7 @@ public class WebParser {
         //创建servletInfoMap集合，将servlet-name和servlet-class分别作为key和value放入servletInfoMap集合中
         Map<String,String> servletInfoMap = new HashMap<String,String>();
         //遍历servletNodes
-        for (Element servletNode : servletNodes) {
+         for (Element servletNode : servletNodes) {
             //获取servlet-name节点对象
             Element servletNameElt = (Element) servletNode.selectSingleNode("servlet-name");
             //获取servletNameElt对象对应的值
